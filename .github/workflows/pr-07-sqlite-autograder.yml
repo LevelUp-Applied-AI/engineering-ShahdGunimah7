@@ -1,0 +1,29 @@
+name: PR 7 — SQLite Queries Autograder
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  autograder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout learner repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fetch latest autograder tests
+        run: |
+          git fetch origin main
+          git checkout origin/main -- tests/test_pr_07_sqlite.py
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run autograder
+        run: pytest tests/test_pr_07_sqlite.py -v --tb=short
